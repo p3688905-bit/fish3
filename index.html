@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>濠梁之辯・莊子互動學習</title>
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-tc/400.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-tc/500.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-tc/700.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-tc/900.css" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: { extend: {
+    colors: {
+      paper:'#f6efe1', rice:'#fffdf6', ink:'#37302a', inksoft:'#6b5f52',
+      cinnabar:'#b23b2a', cinnabarDeep:'#8f2b1e', gold:'#b8862b', jade:'#5e8a70', mist:'#ece3cf'
+    },
+    fontFamily: { serif:['"Noto Serif TC"','serif'] }
+  }}
+}
+</script>
+<style>
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Noto Serif TC',serif;
+    background-color:#f6efe1;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cg fill='none' stroke='%23b8862b' stroke-opacity='0.09' stroke-width='2'%3E%3Cpath d='M22 44c0-9 7-15 15-15 2-9 13-13 20-8 9-4 18 1 19 11 9 1 14 10 11 18'/%3E%3Ccircle cx='34' cy='102' r='9'/%3E%3Ccircle cx='50' cy='102' r='12'/%3E%3Ccircle cx='67' cy='102' r='9'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  ::selection{background:#b23b2a;color:#fff;}
+  .card-paper{background:#fffdf6;box-shadow:0 1px 2px rgba(55,48,42,.06),0 10px 30px -18px rgba(55,48,42,.35);border:1px solid rgba(55,48,42,.10);}
+  .corner{position:relative;}
+  .corner::before,.corner::after{content:'';position:absolute;width:18px;height:18px;border-color:#b23b2a;border-style:solid;opacity:.7;}
+  .corner::before{top:8px;left:8px;border-width:2px 0 0 2px;}
+  .corner::after{bottom:8px;right:8px;border-width:0 2px 2px 0;}
+  .seal{display:inline-flex;align-items:center;justify-content:center;background:#b23b2a;color:#fffdf6;font-weight:900;border-radius:6px;box-shadow:inset 0 0 0 2px rgba(255,253,246,.35),inset 0 0 0 4px rgba(255,253,246,.12);transform:rotate(-4deg);}
+  .btn-cin{background:#b23b2a;color:#fffdf6;border:1px solid #8f2b1e;transition:all .2s;}
+  .btn-cin:hover{background:#8f2b1e;transform:translateY(-1px);box-shadow:0 6px 14px -6px rgba(143,43,30,.5);}
+  .btn-ink{background:transparent;color:#37302a;border:1px solid rgba(55,48,42,.45);transition:all .2s;}
+  .btn-ink:hover{border-color:#b23b2a;color:#b23b2a;}
+  .navlink{position:relative;padding:6px 2px;color:#6b5f52;transition:color .2s;white-space:nowrap;}
+  .navlink:hover{color:#b23b2a;}
+  .navlink.active{color:#b23b2a;}
+  .navlink.active::after{content:'';position:absolute;left:0;right:0;bottom:-2px;height:3px;background:#b23b2a;border-radius:2px;}
+  .sec-no{width:52px;height:52px;border:2px solid #b23b2a;outline:1px solid #b23b2a;outline-offset:3px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:24px;color:#b23b2a;background:#fffdf6;flex:none;}
+  .divider{display:flex;align-items:center;gap:12px;justify-content:center;color:#b8862b;}
+  .divider::before,.divider::after{content:'';height:1px;width:min(180px,28vw);background:linear-gradient(90deg,transparent,#b8862b);}
+  .divider::after{background:linear-gradient(90deg,#b8862b,transparent);}
+  /* 橫排原文 */
+  #vText{font-size:clamp(19px,2vw,25px);line-height:2.1;letter-spacing:.1em;padding:26px 28px;text-indent:2em;}
+  .anno{color:#b23b2a;border-bottom:2px dotted #b8862b;cursor:pointer;padding:0 1px;transition:background .15s;}
+  .anno:hover{background:rgba(184,134,43,.16);}
+  .anno.active{background:#b23b2a;color:#fffdf6;border-bottom-color:#b23b2a;}
+  .chip{border:1px solid rgba(178,59,42,.4);color:#8f2b1e;background:#fffdf6;border-radius:999px;padding:4px 14px;font-size:14px;cursor:pointer;transition:all .15s;}
+  .chip:hover{transform:translateY(-1px);box-shadow:0 4px 10px -6px rgba(143,43,30,.5);}
+  .chip.active{background:#b23b2a;color:#fffdf6;border-color:#8f2b1e;}
+  /* reading */
+  .rchar{border-radius:4px;transition:background .12s,color .12s;}
+  .rchar.now{background:#b23b2a;color:#fffdf6;}
+  .rchar.done{color:#b23b2a;}
+  /* stepper */
+  .step-node{cursor:pointer;transition:all .2s;border:1px solid rgba(55,48,42,.18);}
+  .step-node.active{border-color:#b23b2a;box-shadow:0 8px 20px -12px rgba(143,43,30,.6);transform:translateY(-3px);}
+  /* tabs */
+  .tab-btn{border:1px solid rgba(55,48,42,.2);color:#6b5f52;transition:all .18s;}
+  .tab-btn.active{background:#b23b2a;color:#fffdf6;border-color:#8f2b1e;}
+  .tab-panel{animation:fadeUp .45s ease both;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+  /* quiz */
+  .qopt{display:block;width:100%;border:1px solid rgba(55,48,42,.22);background:#fffdf6;transition:all .18s;text-align:left;cursor:pointer;font-family:inherit;}
+  .qopt:not(:disabled):hover{border-color:#b23b2a;color:#b23b2a;transform:translateX(4px);}
+  .qopt.correct{background:#eaf3ec;border-color:#5e8a70;color:#3c6b52;}
+  .qopt.wrong{background:#f9e9e6;border-color:#b23b2a;color:#8f2b1e;}
+  .qopt:disabled{cursor:default;}
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease;}
+  .reveal.show{opacity:1;transform:none;}
+  /* koi swim */
+  @keyframes swimA{0%{transform:translateX(-14vw) translateY(0) scaleX(1);}49%{transform:translateX(104vw) translateY(-14px) scaleX(1);}50%{transform:translateX(104vw) translateY(-14px) scaleX(-1);}99%{transform:translateX(-14vw) translateY(6px) scaleX(-1);}100%{transform:translateX(-14vw) translateY(0) scaleX(1);}}
+  @keyframes swimB{0%{transform:translateX(108vw) translateY(0) scaleX(-1);}49%{transform:translateX(-16vw) translateY(10px) scaleX(-1);}50%{transform:translateX(-16vw) translateY(10px) scaleX(1);}99%{transform:translateX(108vw) translateY(-8px) scaleX(1);}100%{transform:translateX(108vw) translateY(0) scaleX(-1);}}
+  .koiA{animation:swimA 26s linear infinite;}
+  .koiB{animation:swimB 34s linear infinite;}
+  @keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .floaty{animation:floaty 5s ease-in-out infinite;}
+  @keyframes spinSlow{to{transform:rotate(360deg);}}
+  .spin-slow{animation:spinSlow 60s linear infinite;transform-origin:center;}
+  @keyframes stampIn{0%{opacity:0;transform:scale(2.2) rotate(-14deg);}60%{opacity:1;transform:scale(.92) rotate(-8deg);}100%{opacity:1;transform:scale(1) rotate(-8deg);}}
+  .stamp{animation:stampIn .6s cubic-bezier(.2,.9,.3,1.2) both;}
+  input[type=range]{accent-color:#b23b2a;}
+  .quote-line{border-left:3px solid #b8862b;}
+  #toTop{transition:opacity .3s,transform .3s;}
+</style>
+</head>
+<body class="text-ink font-serif">
+
+<!-- ====== SVG 圖庫 ====== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="koi" viewBox="0 0 120 64">
+      <path d="M6 32 C22 12 52 8 78 16 C96 22 104 27 108 32 C104 37 96 42 78 48 C52 56 22 52 6 32 Z" fill="#e0703a"/>
+      <path d="M106 32 C111 24 116 18 119 13 C116.5 25 116.5 39 119 51 C116 46 111 40 106 32 Z" fill="#eb8b52"/>
+      <path d="M50 14 C54 6 65 3 72 7 C66 9 58 12 50 14 Z" fill="#eb8b52"/>
+      <path d="M38 18 C50 13 66 14 75 20 C64 27 48 26 38 18 Z" fill="#fff7ec" opacity=".8"/>
+      <circle cx="23" cy="28" r="3.1" fill="#33241c"/>
+      <circle cx="24" cy="27" r="1" fill="#fff" opacity=".9"/>
+    </symbol>
+    <symbol id="cloud" viewBox="0 0 120 44">
+      <path d="M14 36 C4 36 2 22 12 18 C12 8 26 4 32 12 C38 2 56 4 58 14 C70 8 82 16 78 26 C90 24 98 34 90 40 L14 40 Z" fill="#fffdf6"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ====== 導覽列 ====== -->
+<nav class="fixed top-0 inset-x-0 z-50 bg-paper/90 backdrop-blur border-b border-ink/10">
+  <div class="max-w-6xl mx-auto px-4 h-14 flex items-center gap-6">
+    <a href="#top" class="flex items-center gap-2 flex-none">
+      <span class="seal w-8 h-8 text-xs">濠梁</span>
+      <span class="font-black tracking-widest hidden sm:inline">濠梁之辯</span>
+    </a>
+    <div class="flex-1 overflow-x-auto">
+      <div class="flex items-center gap-5 text-sm md:text-base px-1">
+        <a class="navlink" data-sec="author" href="#author">作者</a>
+        <a class="navlink" data-sec="dao" href="#dao">道家</a>
+        <a class="navlink" data-sec="mingjia" href="#mingjia">惠施・名家</a>
+        <a class="navlink" data-sec="text" href="#text">文本註釋</a>
+        <a class="navlink" data-sec="read" href="#read">朗讀</a>
+        <a class="navlink" data-sec="translate" href="#translate">語譯</a>
+        <a class="navlink" data-sec="appreciate" href="#appreciate">賞析</a>
+        <a class="navlink" data-sec="quiz" href="#quiz">問答</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ====== 首頁 ====== -->
+<header id="top" class="relative pt-14 overflow-hidden">
+  <div class="relative max-w-6xl mx-auto px-4 pt-8 md:pt-12">
+    <div class="grid lg:grid-cols-[5fr,7fr] gap-8 items-center">
+      <div class="reveal show relative z-10 order-2 lg:order-1">
+        <p class="text-gold tracking-[.35em] text-sm md:text-base">戰國・《莊子・秋水》</p>
+        <div class="flex gap-2 md:gap-3 my-5">
+          <span class="w-16 h-16 md:w-24 md:h-24 card-paper corner flex items-center justify-center text-4xl md:text-6xl font-black text-cinnabar">濠</span>
+          <span class="w-16 h-16 md:w-24 md:h-24 card-paper corner flex items-center justify-center text-4xl md:text-6xl font-black text-ink">梁</span>
+          <span class="w-16 h-16 md:w-24 md:h-24 card-paper corner flex items-center justify-center text-4xl md:text-6xl font-black text-ink">之</span>
+          <span class="w-16 h-16 md:w-24 md:h-24 card-paper corner flex items-center justify-center text-4xl md:text-6xl font-black text-cinnabar">辯</span>
+        </div>
+        <p class="text-lg md:text-xl text-inksoft leading-relaxed">「子非魚，安知魚之樂？」<br>一場關於認知、語言與審美的千古之辯，在春日濠水橋上展開。</p>
+        <div class="flex flex-wrap gap-3 mt-6">
+          <a href="#text" class="btn-cin px-6 py-2.5 rounded">開始閱讀</a>
+          <a href="#read" class="btn-ink px-6 py-2.5 rounded">聆聽朗讀</a>
+          <a href="#quiz" class="btn-ink px-6 py-2.5 rounded">挑戰問答</a>
+        </div>
+        <div class="flex flex-wrap gap-2 mt-6 text-xs md:text-sm text-inksoft">
+          <span class="px-3 py-1 rounded-full border border-gold/50 bg-rice">全文約一百二十字</span>
+          <span class="px-3 py-1 rounded-full border border-gold/50 bg-rice">兩位主角</span>
+          <span class="px-3 py-1 rounded-full border border-gold/50 bg-rice">千年迴響</span>
+        </div>
+      </div>
+      <!-- 場景插畫 -->
+      <div class="order-1 lg:order-2 reveal show">
+        <div class="card-paper corner rounded-lg overflow-hidden">
+          <svg viewBox="0 0 1200 540" class="w-full h-auto block" role="img" aria-label="莊子與惠子遊於濠梁之上，觀魚而辯">
+            <defs>
+              <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdf7e6"/><stop offset="1" stop-color="#f1e8cf"/></linearGradient>
+              <linearGradient id="waterG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d5e7dc"/><stop offset="1" stop-color="#eff4e7"/></linearGradient>
+            </defs>
+            <rect width="1200" height="540" fill="url(#skyG)"/>
+            <circle cx="985" cy="118" r="80" fill="#edc06b" opacity=".22"/>
+            <circle cx="985" cy="118" r="52" fill="#edc06b" opacity=".9"/>
+            <use href="#cloud" x="120" y="60" width="150" opacity=".9"/>
+            <use href="#cloud" x="760" y="40" width="120" opacity=".8"/>
+            <use href="#cloud" x="420" y="110" width="100" opacity=".7"/>
+            <path d="M0 305 L120 212 L235 288 L335 206 L470 305 L565 242 L705 305 L825 232 L965 305 L1085 252 L1200 300 L1200 540 L0 540 Z" fill="#b9cbb6" opacity=".85"/>
+            <path d="M0 340 L150 268 L300 340 L370 300 L470 352 L470 540 L0 540 Z" fill="#93b29c" opacity=".9"/>
+            <path d="M760 348 L900 262 L1040 330 L1200 282 L1200 540 L760 540 Z" fill="#93b29c" opacity=".9"/>
+            <rect y="345" width="1200" height="195" fill="url(#waterG)"/>
+            <g stroke="#9dc0b2" stroke-width="2.4" fill="none" opacity=".75">
+              <path d="M120 420 q22 -9 44 0 q22 9 44 0"/><path d="M880 468 q22 -9 44 0 q22 9 44 0"/>
+              <path d="M240 495 q20 -8 40 0 q20 8 40 0"/><path d="M980 420 q18 -8 36 0"/>
+            </g>
+            <path d="M470 430 Q600 350 730 430 L730 452 Q600 372 470 452 Z" fill="#7fa79a" opacity=".5"/>
+            <path d="M300 400 Q600 285 900 400 L900 418 Q600 303 300 418 Z" fill="#c8a97e" stroke="#8a6b4a" stroke-width="2"/>
+            <path d="M300 385 Q600 270 900 385" fill="none" stroke="#8a6b4a" stroke-width="5" stroke-linecap="round"/>
+            <g stroke="#8a6b4a" stroke-width="3">
+              <line x1="375" y1="360" x2="375" y2="375"/><line x1="450" y1="342" x2="450" y2="357"/>
+              <line x1="525" y1="331" x2="525" y2="346"/><line x1="600" y1="327.5" x2="600" y2="342.5"/>
+              <line x1="675" y1="331" x2="675" y2="346"/><line x1="750" y1="342" x2="750" y2="357"/>
+              <line x1="825" y1="360" x2="825" y2="375"/>
+            </g>
+            <g>
+              <path d="M540 344 C540 316 546 300 556 291 C566 300 572 316 572 344 Z" fill="#5b7d8c"/>
+              <path d="M566 304 C577 309 584 318 586 327" stroke="#5b7d8c" stroke-width="7" fill="none" stroke-linecap="round"/>
+              <circle cx="556" cy="281" r="10.5" fill="#f3d6ad"/>
+              <path d="M546 277 a10.5 10.5 0 0 1 20 0 q-4 -6 -10 -6 t-10 6Z" fill="#3a2f28"/>
+              <circle cx="556" cy="268" r="3.4" fill="#3a2f28"/>
+            </g>
+            <g>
+              <path d="M640 346 C640 318 646 302 656 293 C666 302 672 318 672 346 Z" fill="#96543f"/>
+              <path d="M646 306 C636 311 630 320 628 329" stroke="#96543f" stroke-width="7" fill="none" stroke-linecap="round"/>
+              <circle cx="656" cy="283" r="10.5" fill="#f3d6ad"/>
+              <path d="M645 279 a11 8 0 0 1 22 0 l-2 -7 h-18 Z" fill="#3a2f28"/>
+            </g>
+            <path d="M96 402 C102 338 90 300 112 256" stroke="#7a6a4f" stroke-width="10" fill="none" stroke-linecap="round"/>
+            <g stroke="#79a06b" stroke-width="3" fill="none">
+              <path d="M112 256 C96 300 92 336 96 372"/><path d="M112 256 C120 300 124 340 120 378"/>
+              <path d="M112 256 C140 292 150 330 148 366"/><path d="M112 256 C84 288 74 322 76 356"/>
+            </g>
+            <g fill="#9cc27f">
+              <ellipse cx="96" cy="340" rx="5" ry="14" transform="rotate(8 96 340)"/>
+              <ellipse cx="122" cy="352" rx="5" ry="15" transform="rotate(-6 122 352)"/>
+              <ellipse cx="146" cy="336" rx="4.6" ry="13" transform="rotate(-14 146 336)"/>
+              <ellipse cx="78" cy="326" rx="4.6" ry="13" transform="rotate(14 78 326)"/>
+              <ellipse cx="110" cy="300" rx="4.4" ry="12"/>
+            </g>
+            <use href="#koi" x="470" y="452" width="120" height="64" opacity=".92"/>
+            <use href="#koi" x="620" y="486" width="90" height="48" opacity=".88" transform="rotate(-6 665 510)"/>
+            <use href="#koi" x="760" y="448" width="70" height="38" opacity=".85" transform="rotate(5 795 467)"/>
+            <ellipse cx="530" cy="470" rx="60" ry="8" fill="none" stroke="#8fb8a6" opacity=".7"/>
+            <ellipse cx="668" cy="505" rx="46" ry="6" fill="none" stroke="#8fb8a6" opacity=".6"/>
+            <g stroke="#6b5f52" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".8">
+              <path d="M838 130 q8 -8 16 0 q8 -8 16 0"/><path d="M880 152 q6 -6 12 0 q6 -6 12 0"/>
+            </g>
+          </svg>
+        </div>
+        <p class="text-center text-xs text-inksoft mt-2 tracking-widest">―― 鯈魚出遊從容，是魚之樂也 ――</p>
+      </div>
+    </div>
+  </div>
+  <div class="pointer-events-none absolute inset-x-0 bottom-2 h-16 overflow-hidden opacity-80">
+    <svg class="koiA absolute bottom-4 w-16" viewBox="0 0 120 64"><use href="#koi"/></svg>
+    <svg class="koiB absolute bottom-1 w-10" viewBox="0 0 120 64"><use href="#koi"/></svg>
+  </div>
+  <div class="divider my-10"><span class="text-lg">❖</span></div>
+</header>
+
+<main class="max-w-6xl mx-auto px-4">
+
+<!-- ====== 壹・作者 ====== -->
+<section id="author" class="py-12 scroll-mt-20">
+  <div class="flex items-center gap-4 reveal">
+    <span class="sec-no">壹</span>
+    <div><h2 class="text-3xl md:text-4xl font-black">作者其人</h2><p class="text-inksoft mt-1">莊子――曳尾塗中的逍遙哲人</p></div>
+  </div>
+  <div class="grid lg:grid-cols-[4fr,7fr] gap-8 mt-8">
+    <div class="reveal">
+      <div class="card-paper corner rounded-lg p-4">
+        <svg viewBox="0 0 420 500" class="w-full h-auto rounded" role="img" aria-label="莊子畫像插畫">
+          <defs><linearGradient id="pg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbf6e8"/><stop offset="1" stop-color="#f2ead4"/></linearGradient></defs>
+          <rect width="420" height="500" fill="url(#pg1)"/>
+          <g stroke="#8fae8f" stroke-width="5" opacity=".55"><line x1="352" y1="60" x2="346" y2="420"/><line x1="382" y1="90" x2="378" y2="430"/></g>
+          <g fill="#8fae8f" opacity=".6"><path d="M346 140 q26 -14 40 -4 q-22 12 -40 4Z"/><path d="M350 220 q26 -14 40 -4 q-22 12 -40 4Z"/><path d="M376 300 q24 -16 40 -6 q-20 14 -40 6Z"/></g>
+          <ellipse cx="205" cy="436" rx="150" ry="26" fill="#d9c8a4"/>
+          <path d="M210 196 C150 216 118 302 108 424 C170 444 250 444 312 424 C302 302 270 216 210 196 Z" fill="#6d7f8c"/>
+          <path d="M182 220 L210 258 L238 220" stroke="#f5efdd" stroke-width="7" fill="none"/>
+          <path d="M138 356 q72 22 144 0 l0 20 q-72 22 -144 0 Z" fill="#b23b2a" opacity=".85"/>
+          <path d="M152 300 C140 322 136 344 140 362 L210 348 Z" fill="#5d6f7c"/>
+          <path d="M268 300 C280 322 284 344 280 362 L210 348 Z" fill="#5d6f7c"/>
+          <rect x="138" y="336" width="144" height="26" rx="12" fill="#f7efdc" stroke="#b8862b" stroke-width="2"/>
+          <circle cx="138" cy="349" r="9" fill="#8a6b4a"/><circle cx="282" cy="349" r="9" fill="#8a6b4a"/>
+          <circle cx="210" cy="150" r="42" fill="#f3d6ad"/>
+          <path d="M168 142 a42 42 0 0 1 84 0 q-8 -18 -42 -18 t-42 18Z" fill="#3a2f28"/>
+          <circle cx="210" cy="104" r="13" fill="#3a2f28"/><line x1="192" y1="102" x2="236" y2="96" stroke="#b8862b" stroke-width="4" stroke-linecap="round"/>
+          <path d="M188 146 q8 -6 16 0 M216 146 q8 -6 16 0" stroke="#3a2f28" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+          <path d="M190 158 q8 6 16 0 M214 158 q8 6 16 0" stroke="#3a2f28" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M206 168 q4 6 8 0" stroke="#c99a6a" stroke-width="2.4" fill="none"/>
+          <path d="M196 180 q14 10 28 0" stroke="#3a2f28" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M198 192 q-4 16 -10 24 M222 192 q4 16 10 24 M210 194 q0 16 0 24" stroke="#4a3b32" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          <g transform="translate(292 96)">
+            <path d="M0 0 C-16 -18 -38 -12 -30 4 C-24 14 -8 12 0 0Z" fill="#e0703a"/>
+            <path d="M0 0 C16 -18 38 -12 30 4 C24 14 8 12 0 0Z" fill="#eb8b52"/>
+            <path d="M0 2 q-4 10 2 16" stroke="#3a2f28" stroke-width="2" fill="none"/>
+            <circle cx="-14" cy="-4" r="3" fill="#fff7ec"/><circle cx="14" cy="-4" r="3" fill="#fff7ec"/>
+          </g>
+          <g fill="#9cc27f" opacity=".8"><ellipse cx="80" cy="120" rx="5" ry="12" transform="rotate(20 80 120)"/><ellipse cx="96" cy="180" rx="4" ry="10" transform="rotate(-16 96 180)"/></g>
+        </svg>
+        <div class="flex items-center justify-between mt-3 px-1">
+          <p class="font-black text-xl tracking-widest">莊子小像</p>
+          <span class="seal w-9 h-9 text-[11px] leading-tight text-center">莊周</span>
+        </div>
+      </div>
+    </div>
+    <div class="space-y-6">
+      <div class="card-paper rounded-lg p-6 reveal">
+        <p class="leading-loose">莊子（約西元前369年—前286年），名<b>周</b>，戰國時宋國蒙人，曾任漆園小吏。他是繼老子之後道家思想的集大成者，與老子並稱「<b>老莊</b>」。楚威王聞其賢，遣使以國相之位相聘，莊子卻以神龜「寧其生而曳尾於塗中」為喻，婉言相拒，終身不仕，逍遙於著書與辯論之間。他與名家惠施亦友亦敵，濠梁之辯正是二人機鋒交會的精彩一頁。</p>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4 reveal">
+        <div class="card-paper rounded-lg p-5"><p class="text-gold text-sm tracking-widest">姓名・時代</p><p class="font-bold mt-1">莊周・戰國宋國蒙人</p></div>
+        <div class="card-paper rounded-lg p-5"><p class="text-gold text-sm tracking-widest">學派地位</p><p class="font-bold mt-1">道家代表・與老子並稱「老莊」</p></div>
+        <div class="card-paper rounded-lg p-5"><p class="text-gold text-sm tracking-widest">代表著作</p><p class="font-bold mt-1">《莊子》（《南華真經》）現存三十三篇</p></div>
+        <div class="card-paper rounded-lg p-5"><p class="text-gold text-sm tracking-widest">論辯好友</p><p class="font-bold mt-1">名家惠施（惠子）</p></div>
+      </div>
+      <div class="card-paper rounded-lg p-6 reveal">
+        <h3 class="font-black text-xl mb-4 text-cinnabar">成語典故・皆出莊子</h3>
+        <div class="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-sm md:text-base">
+          <p><span class="text-cinnabar font-bold">鵬程萬里</span> ― 鯤化為鵬，摶扶搖而上九萬里（逍遙遊）</p>
+          <p><span class="text-cinnabar font-bold">莊周夢蝶</span> ― 不知周之夢為蝴蝶與？（齊物論）</p>
+          <p><span class="text-cinnabar font-bold">庖丁解牛</span> ― 依乎天理，游刃有餘（養生主）</p>
+          <p><span class="text-cinnabar font-bold">濠上觀魚</span> ― 子非魚，安知魚之樂（秋水）</p>
+          <p><span class="text-cinnabar font-bold">曳尾塗中</span> ― 寧自由於泥塗，不尊貴於廟堂（秋水）</p>
+          <p><span class="text-cinnabar font-bold">望洋興嘆</span> ― 河伯見北海若，方知已之醜（秋水）</p>
+        </div>
+      </div>
+      <div class="reveal space-y-3">
+        <blockquote class="quote-line bg-rice px-5 py-3 rounded-r text-inksoft">「天地與我並生，而萬物與我為一。」<span class="text-xs text-gold">――《齊物論》</span></blockquote>
+        <blockquote class="quote-line bg-rice px-5 py-3 rounded-r text-inksoft">「至人無己，神人無功，聖人無名。」<span class="text-xs text-gold">――《逍遙遊》</span></blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider my-4"><span>❖</span></div>
+
+<!-- ====== 貳・道家 ====== -->
+<section id="dao" class="py-12 scroll-mt-20">
+  <div class="flex items-center gap-4 reveal">
+    <span class="sec-no">貳</span>
+    <div><h2 class="text-3xl md:text-4xl font-black">道家風神</h2><p class="text-inksoft mt-1">道法自然，逍遙齊物</p></div>
+  </div>
+  <div class="grid lg:grid-cols-[7fr,5fr] gap-8 mt-8">
+    <div class="space-y-6">
+      <div class="card-paper rounded-lg p-6 reveal">
+        <p class="leading-loose">道家是先秦諸子中以「<b>道</b>」為最高範疇的思想流派。相傳春秋末年<b>老子</b>著《道德經》五千言，以「道」為天地萬物的本源與規律，開創道家；戰國時期<b>莊子</b>繼起，將道家由政治哲學引向心靈的自由與審美；至漢初則有黃老之學主張「無為而治」，與民休息。道家與儒家一入世一超然，共同塑造了中國文化的雙翼。</p>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="card-paper rounded-lg p-5 reveal"><p class="text-2xl">☯</p><h4 class="font-black text-lg mt-1">道</h4><p class="text-sm text-inksoft mt-1 leading-relaxed">萬物之本源與總規律，「道生一，一生二，二生三，三生萬物」。</p></div>
+        <div class="card-paper rounded-lg p-5 reveal"><p class="text-2xl">🌿</p><h4 class="font-black text-lg mt-1">道法自然</h4><p class="text-sm text-inksoft mt-1 leading-relaxed">順應萬物本然之性，不強為、不造作，任其自化自成。</p></div>
+        <div class="card-paper rounded-lg p-5 reveal"><p class="text-2xl">🕊️</p><h4 class="font-black text-lg mt-1">無為</h4><p class="text-sm text-inksoft mt-1 leading-relaxed">非無所作為，而是不妄為；「無為而無不為」。</p></div>
+        <div class="card-paper rounded-lg p-5 reveal"><p class="text-2xl">⚖️</p><h4 class="font-black text-lg mt-1">齊物</h4><p class="text-sm text-inksoft mt-1 leading-relaxed">泯除彼此、是非、物我的對立，「萬物與我為一」。</p></div>
+        <div class="card-paper rounded-lg p-5 reveal"><p class="text-2xl">🦋</p><h4 class="font-black text-lg mt-1">物化</h4><p class="text-sm text-inksoft mt-1 leading-relaxed">莊周夢蝶，物我相化；打破主體與客體的隔閡。</p></div>
+        <div class="card-paper rounded-lg p-5 reveal"><p class="text-2xl">🎐</p><h4 class="font-black text-lg mt-1">逍遙</h4><p class="text-sm text-inksoft mt-1 leading-relaxed">精神的絕對自由，無待於外，優遊於天地之間。</p></div>
+      </div>
+      <div class="card-paper rounded-lg p-6 reveal">
+        <h3 class="font-black text-xl mb-3 text-cinnabar">道家與濠梁之辯</h3>
+        <p class="leading-loose text-sm md:text-base">濠梁之辯中，惠子代表名家「析名辨理」的邏輯精神，莊子則展現道家「<b>物我合一、直觀體悟</b>」的審美心境。莊子不以論證取勝，而以「知之濠上」點出：人與萬物可以在生命的感通中相遇——這正是道家「齊物」「物化」思想的生動演繹。</p>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="card-paper corner rounded-lg overflow-hidden sticky top-20">
+        <svg viewBox="0 0 700 520" class="w-full h-auto block" role="img" aria-label="道家山水意象插畫">
+          <defs><linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbf6e8"/><stop offset="1" stop-color="#eef0dd"/></linearGradient>
+          <linearGradient id="wa2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dbe9de"/><stop offset="1" stop-color="#eff4e7"/></linearGradient></defs>
+          <rect width="700" height="520" fill="url(#sky2)"/>
+          <g transform="translate(545 118)">
+            <g class="spin-slow"><circle r="62" fill="#fffdf6" opacity=".85" stroke="#b8862b" stroke-opacity=".5"/>
+            <path d="M0 -62 A62 62 0 0 1 0 62 A31 31 0 0 1 0 0 A31 31 0 0 0 0 -62Z" fill="#37302a" opacity=".8"/>
+            <circle cy="-31" r="9" fill="#fffdf6"/><circle cy="31" r="9" fill="#37302a" opacity=".8"/></g>
+          </g>
+          <use href="#cloud" x="60" y="90" width="150" opacity=".9"/><use href="#cloud" x="300" y="60" width="110" opacity=".75"/>
+          <path d="M0 300 L90 220 L170 292 L260 210 L370 306 L470 238 L580 300 L700 250 L700 520 L0 520Z" fill="#b9cbb6" opacity=".9"/>
+          <path d="M0 340 L120 268 L240 344 L330 296 L430 356 L430 520 L0 520Z" fill="#8fb09a"/>
+          <path d="M360 356 L520 260 L640 330 L700 306 L700 520 L360 520Z" fill="#8fb09a"/>
+          <path d="M120 380 L230 318 L330 380Z" fill="#6f9683"/>
+          <rect y="388" width="700" height="132" fill="url(#wa2)"/>
+          <path d="M60 420 C220 400 300 460 480 436 S660 420 700 436" stroke="#cfe3d6" stroke-width="26" fill="none" opacity=".9"/>
+          <g stroke="#9dc0b2" stroke-width="2.2" fill="none" opacity=".8"><path d="M110 470 q20 -8 40 0 q20 8 40 0"/><path d="M480 486 q18 -8 36 0 q18 8 36 0"/></g>
+          <g>
+            <path d="M470 300 Q530 262 590 300 L578 300 Q530 272 482 300Z" fill="#8a5b4c"/>
+            <path d="M470 300 Q530 262 590 300" stroke="#6e463a" stroke-width="4" fill="none"/>
+            <line x1="530" y1="262" x2="530" y2="252" stroke="#6e463a" stroke-width="4"/><circle cx="530" cy="249" r="4" fill="#b8862b"/>
+            <line x1="492" y1="300" x2="492" y2="342" stroke="#8a5b4c" stroke-width="5"/><line x1="568" y1="300" x2="568" y2="342" stroke="#8a5b4c" stroke-width="5"/>
+            <rect x="482" y="342" width="96" height="10" fill="#a3805c"/>
+          </g>
+          <g><path d="M88 402 C86 362 92 336 88 310" stroke="#7a6a4f" stroke-width="9" fill="none" stroke-linecap="round"/>
+          <ellipse cx="72" cy="306" rx="34" ry="14" fill="#5e8a70"/><ellipse cx="104" cy="288" rx="30" ry="12" fill="#6f9683"/><ellipse cx="82" cy="270" rx="24" ry="10" fill="#7fa98c"/></g>
+          <g fill="#fffdf6" stroke="#6b5f52" stroke-width="1.6">
+            <path d="M330 150 q16 -12 34 -4 q18 8 30 2 q-8 12 -24 12 q-22 0 -40 -10Z"/>
+            <path d="M250 190 q14 -10 30 -3 q16 7 26 2 q-7 10 -21 10 q-19 0 -35 -9Z"/>
+          </g>
+          <circle cx="360" cy="146" r="2.6" fill="#b23b2a"/><circle cx="280" cy="185" r="2.4" fill="#b23b2a"/>
+        </svg>
+        <div class="p-5">
+          <p class="leading-loose text-sm text-inksoft">「人法地，地法天，天法道，道法自然。」道家追求的，是與天地萬物相往還、相感通的大自在。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider my-4"><span>❖</span></div>
+
+<!-- ====== 參・惠施與名家 ====== -->
+<section id="mingjia" class="py-12 scroll-mt-20">
+  <div class="flex items-center gap-4 reveal">
+    <span class="sec-no">參</span>
+    <div><h2 class="text-3xl md:text-4xl font-black">惠施與名家</h2><p class="text-inksoft mt-1">亦友亦敵的論辯對手・析名辨理的邏輯先驅</p></div>
+  </div>
+
+  <div class="grid lg:grid-cols-2 gap-8 mt-8">
+    <!-- 惠施人物卡 -->
+    <div class="space-y-6">
+      <!-- 惠施畫像 -->
+      <div class="card-paper corner rounded-lg p-4 reveal">
+        <svg viewBox="0 0 420 500" class="w-full h-auto rounded" role="img" aria-label="惠施畫像插畫">
+          <defs><linearGradient id="pg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbf4e2"/><stop offset="1" stop-color="#f1e6cc"/></linearGradient></defs>
+          <rect width="420" height="500" fill="url(#pg2)"/>
+          <!-- 連環 -->
+          <g fill="none" stroke="#b8862b" stroke-width="5" opacity=".85">
+            <circle cx="72" cy="86" r="24"/><circle cx="98" cy="102" r="24"/>
+          </g>
+          <!-- 竹簡書堆 -->
+          <g transform="translate(48 356)">
+            <rect x="0" y="26" width="96" height="14" rx="7" fill="#c9a877" stroke="#a5854d" stroke-width="2"/>
+            <rect x="8" y="12" width="88" height="14" rx="7" fill="#d8b877" stroke="#a5854d" stroke-width="2"/>
+            <rect x="2" y="-2" width="92" height="14" rx="7" fill="#c9a877" stroke="#a5854d" stroke-width="2"/>
+            <line x1="20" y1="-2" x2="20" y2="40" stroke="#8f2b1e" stroke-width="3"/>
+            <line x1="78" y1="-2" x2="78" y2="40" stroke="#8f2b1e" stroke-width="3"/>
+          </g>
+          <text x="96" y="452" text-anchor="middle" font-size="15" fill="#8a7a5c" font-family="'Noto Serif TC',serif">其書五車</text>
+          <ellipse cx="228" cy="460" rx="150" ry="24" fill="#d9c8a4"/>
+          <!-- 深衣 -->
+          <path d="M228 188 C176 208 148 306 138 448 C196 468 268 468 322 448 C312 306 280 208 228 188 Z" fill="#4e6472"/>
+          <path d="M196 216 L228 260 L260 216" stroke="#f5efdd" stroke-width="8" fill="none"/>
+          <path d="M158 372 q70 20 140 0 l0 18 q-70 20 -140 0 Z" fill="#b8862b" opacity=".9"/>
+          <path d="M228 372 q3 22 0 44" stroke="#8f2b1e" stroke-width="5" fill="none"/>
+          <!-- 拱袖與竹簡 -->
+          <path d="M160 300 C178 336 278 336 296 300 C300 330 268 352 228 352 C188 352 156 330 160 300 Z" fill="#3f5563"/>
+          <path d="M172 306 C192 332 264 332 284 306" stroke="#f5efdd" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <g transform="translate(188 318) rotate(-6)">
+            <rect x="0" y="0" width="84" height="40" rx="5" fill="#e8cf96" stroke="#a5854d" stroke-width="2.4"/>
+            <g stroke="#a5854d" stroke-width="2"><line x1="14" y1="3" x2="14" y2="37"/><line x1="28" y1="3" x2="28" y2="37"/><line x1="42" y1="3" x2="42" y2="37"/><line x1="56" y1="3" x2="56" y2="37"/><line x1="70" y1="3" x2="70" y2="37"/></g>
+            <line x1="-6" y1="20" x2="90" y2="20" stroke="#8f2b1e" stroke-width="3"/>
+          </g>
+          <!-- 頭與進賢冠 -->
+          <circle cx="228" cy="142" r="42" fill="#f3d6ad"/>
+          <path d="M186 134 a42 42 0 0 1 84 0 q-6 -20 -42 -20 t-42 20Z" fill="#3a2f28"/>
+          <rect x="196" y="96" width="64" height="14" rx="6" fill="#3a2f28"/>
+          <path d="M202 96 C202 72 212 58 228 58 C244 58 254 72 254 96 Z" fill="#3a2f28"/>
+          <line x1="218" y1="64" x2="218" y2="94" stroke="#b8862b" stroke-width="3"/>
+          <line x1="238" y1="64" x2="238" y2="94" stroke="#b8862b" stroke-width="3"/>
+          <line x1="252" y1="100" x2="272" y2="94" stroke="#b8862b" stroke-width="4" stroke-linecap="round"/>
+          <!-- 眉目：揚眉善辯之態 -->
+          <path d="M200 142 q9 -9 18 -4" stroke="#3a2f28" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+          <path d="M240 140 q8 -6 17 -1" stroke="#3a2f28" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+          <circle cx="210" cy="152" r="3.4" fill="#3a2f28"/>
+          <circle cx="247" cy="151" r="3.4" fill="#3a2f28"/>
+          <path d="M226 162 q3 5 6 1" stroke="#c99a6a" stroke-width="2.4" fill="none"/>
+          <!-- 鬚與口 -->
+          <path d="M204 172 q-10 8 -20 10 M252 172 q10 8 20 10" stroke="#4a3b32" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+          <path d="M214 178 q14 8 28 0" stroke="#3a2f28" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M228 188 q0 14 0 22" stroke="#4a3b32" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          <!-- 飛揚的辯辭意象 -->
+          <g font-family="'Noto Serif TC',serif" font-weight="900" opacity=".5">
+            <text x="330" y="150" font-size="26" fill="#b23b2a" transform="rotate(8 330 150)">名</text>
+            <text x="344" y="196" font-size="26" fill="#5e8a70" transform="rotate(-6 344 196)">實</text>
+          </g>
+          <use href="#cloud" x="292" y="54" width="86" opacity=".7"/>
+        </svg>
+        <div class="flex items-center justify-between mt-3 px-1">
+          <p class="font-black text-xl tracking-widest">惠施小像</p>
+          <span class="seal w-9 h-9 text-[11px] leading-tight text-center">惠施</span>
+        </div>
+      </div>
+
+      <div class="card-paper rounded-lg p-6 reveal">
+        <div class="flex items-center gap-4">
+          <div>
+            <h3 class="font-black text-2xl">惠施（惠子）</h3>
+            <p class="text-inksoft text-sm mt-1">約西元前370年—前310年・戰國名士・梁國之相</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3 mt-5 text-sm">
+          <div class="bg-[#fbf6e8] rounded p-3"><p class="text-gold text-xs tracking-widest">姓名</p><p class="font-bold mt-0.5">惠氏，名施，宋國人</p></div>
+          <div class="bg-[#fbf6e8] rounded p-3"><p class="text-gold text-xs tracking-widest">學派</p><p class="font-bold mt-0.5">名家「合同異」派宗主</p></div>
+          <div class="bg-[#fbf6e8] rounded p-3"><p class="text-gold text-xs tracking-widest">仕宦</p><p class="font-bold mt-0.5">相梁惠王，主導「齊魏相王」</p></div>
+          <div class="bg-[#fbf6e8] rounded p-3"><p class="text-gold text-xs tracking-widest">著作</p><p class="font-bold mt-0.5">《惠子》一篇，已佚；學說散見《莊子》諸書</p></div>
+        </div>
+        <p class="leading-loose mt-5">惠施博學善辯，「其書五車」，是戰國中期最負盛名的辯者，也是莊子一生中最重要的論敵與摯友。他主張「<b>合同異</b>」：強調萬物的差異是相對的，同與異可以相通相化，故曰「天地一體也」。在政治上，他主張齊、魏互尊為王以止戰，是當時「合縱連橫」大局中的重要人物。</p>
+        <p class="leading-loose mt-3">《莊子》一書中，惠子出現了二十餘次：或辯於濠梁之上，或論「大瓠」之用，或爭「人而無情」之義。莊子筆下的惠子雖常被機鋒所挫，卻從非陪襯——沒有這把邏輯的利刃，莊子的智慧便無從閃光。</p>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-3 reveal">
+        <div class="card-paper rounded-lg p-4"><p class="text-cinnabar font-black">濠梁之辯</p><p class="text-xs text-inksoft mt-1 leading-relaxed">以「子非魚」詰難莊子，逼出「我知之濠上」的妙答。</p></div>
+        <div class="card-paper rounded-lg p-4"><p class="text-cinnabar font-black">鴟得腐鼠</p><p class="text-xs text-inksoft mt-1 leading-relaxed">惠子相梁，莊子往見；莊子以鵷鶵自比，譏其以相位為腐鼠。</p></div>
+        <div class="card-paper rounded-lg p-4"><p class="text-cinnabar font-black">運斤成風</p><p class="text-xs text-inksoft mt-1 leading-relaxed">惠子死後，莊子過其墓，歎「自夫子之死也，吾無以為質矣，吾無與言之矣」。</p></div>
+      </div>
+      <blockquote class="quote-line bg-rice px-5 py-4 rounded-r reveal text-inksoft leading-loose">
+        「郢人堊慢其鼻端……使匠石斲之。匠石運斤成風……自夫子之死也，吾無以為質矣，吾無與言之矣！」
+        <span class="block text-xs text-gold mt-2">――《莊子・徐無鬼》：莊子追念惠子，無人可與論辯的寂寞</span>
+      </blockquote>
+    </div>
+
+    <!-- 名家介紹 -->
+    <div class="space-y-6">
+      <div class="card-paper rounded-lg p-6 reveal">
+        <h3 class="font-black text-xl mb-3 text-cinnabar">什麼是名家？</h3>
+        <p class="leading-loose text-sm md:text-base">名家是先秦諸子中以探討「<b>名</b>」（名稱、概念）與「<b>實</b>」（事物、實際）之關係為核心的學派，因其長於論辯、講究推理，又稱「<b>辯者</b>」「<b>刑名家</b>」「<b>察士</b>」。名家上承春秋鄭國鄧析「操兩可之說」的訟辯之風，下啟戰國邏輯思潮，與後期墨家共同奠定了中國古代邏輯學（名學）的基礎。</p>
+        <svg viewBox="0 0 520 240" class="w-full max-w-md mx-auto mt-4" role="img" aria-label="名與實的天平示意圖">
+          <circle cx="260" cy="34" r="10" fill="#b8862b"/>
+          <line x1="260" y1="44" x2="260" y2="176" stroke="#8a6b4a" stroke-width="7" stroke-linecap="round"/>
+          <path d="M232 196 L288 196 L296 210 L224 210 Z" fill="#a3805c"/>
+          <line x1="118" y1="64" x2="402" y2="64" stroke="#8a6b4a" stroke-width="7" stroke-linecap="round"/>
+          <g stroke="#8a6b4a" stroke-width="2.6"><line x1="118" y1="64" x2="96" y2="130"/><line x1="118" y1="64" x2="140" y2="130"/><line x1="402" y1="64" x2="380" y2="130"/><line x1="402" y1="64" x2="424" y2="130"/></g>
+          <path d="M84 130 Q118 152 152 130 L148 126 Q118 144 88 126 Z" fill="#b23b2a"/>
+          <path d="M368 130 Q402 152 436 130 L432 126 Q402 144 372 126 Z" fill="#5e8a70"/>
+          <text x="118" y="182" text-anchor="middle" font-size="30" font-weight="900" fill="#b23b2a" font-family="'Noto Serif TC',serif">名</text>
+          <text x="402" y="182" text-anchor="middle" font-size="30" font-weight="900" fill="#5e8a70" font-family="'Noto Serif TC',serif">實</text>
+          <text x="260" y="232" text-anchor="middle" font-size="15" fill="#6b5f52" font-family="'Noto Serif TC',serif">名家之學・在名實之間</text>
+        </svg>
+      </div>
+      <div class="space-y-3 reveal">
+        <h4 class="font-black text-lg text-ink">代表人物・一脈三峰</h4>
+        <div class="card-paper rounded-lg p-4 flex gap-4 items-start">
+          <span class="seal w-10 h-10 text-xs flex-none mt-1">先驅</span>
+          <div><p class="font-black">鄧析（春秋・鄭）</p><p class="text-sm text-inksoft leading-relaxed">名家先聲。著《竹刑》，教人訴訟，「操兩可之說，設無窮之辭」，開名辯風氣之先。</p></div>
+        </div>
+        <div class="card-paper rounded-lg p-4 flex gap-4 items-start">
+          <span class="seal w-10 h-10 text-xs flex-none mt-1">合同異</span>
+          <div><p class="font-black">惠施（戰國中期・宋）</p><p class="text-sm text-inksoft leading-relaxed">強調萬物同異的相對與相通，「天與地卑，山與澤平」「天地一體也」，以宏觀的相對主義消解執著。</p></div>
+        </div>
+        <div class="card-paper rounded-lg p-4 flex gap-4 items-start">
+          <span class="seal w-10 h-10 text-xs flex-none mt-1">離堅白</span>
+          <div><p class="font-black">公孫龍（戰國後期・趙）</p><p class="text-sm text-inksoft leading-relaxed">主張概念的嚴格分離：「白馬非馬」「堅白石二」——堅、白、石各自獨立，名理分析臻於精微。</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 惠施學說選 -->
+  <div class="card-paper rounded-lg p-6 md:p-8 mt-8 reveal">
+    <h3 class="font-black text-2xl mb-1">惠施學說選（歷物十事）</h3>
+    <p class="text-inksoft text-sm mb-5">《莊子・天下》篇保存了惠施學說的綱要，以下選錄數則，可見其「合同異」的思辨風采。</p>
+    <div class="grid md:grid-cols-2 gap-x-10 gap-y-4">
+      <div class="flex gap-3"><span class="text-gold font-black flex-none">其一</span><p class="leading-relaxed text-sm md:text-base">「至大無外，謂之大一；至小無內，謂之小一。」<span class="block text-xs text-inksoft mt-1">空間之大與小皆無絕對邊界――相對之義。</span></p></div>
+      <div class="flex gap-3"><span class="text-gold font-black flex-none">其二</span><p class="leading-relaxed text-sm md:text-base">「無厚，不可積也，其大千里。」<span class="block text-xs text-inksoft mt-1">平面無厚度卻可延展千里――有無相即。</span></p></div>
+      <div class="flex gap-3"><span class="text-gold font-black flex-none">其三</span><p class="leading-relaxed text-sm md:text-base">「天與地卑，山與澤平。」<span class="block text-xs text-inksoft mt-1">高下之別隨觀者而變――打破常識的執定。</span></p></div>
+      <div class="flex gap-3"><span class="text-gold font-black flex-none">其四</span><p class="leading-relaxed text-sm md:text-base">「日方中方睨，物方生方死。」<span class="block text-xs text-inksoft mt-1">太陽方至正中便已西斜，萬物方生即趨於死――變動不居。</span></p></div>
+      <div class="flex gap-3"><span class="text-gold font-black flex-none">其五</span><p class="leading-relaxed text-sm md:text-base">「大同而與小同異，此之謂小同異；萬物畢同畢異，此之謂大同異。」<span class="block text-xs text-inksoft mt-1">同異有層次，終極而言萬物既全同又全異。</span></p></div>
+      <div class="flex gap-3"><span class="text-gold font-black flex-none">其六</span><p class="leading-relaxed text-sm md:text-base">「南方無窮而有窮。」「我知天下之中央，燕之北、越之南是也。」<span class="block text-xs text-inksoft mt-1">方位與中心皆是約定，無絕對所在。</span></p></div>
+      <div class="flex gap-3 md:col-span-2"><span class="text-gold font-black flex-none">其七</span><p class="leading-relaxed text-sm md:text-base">「泛愛萬物，天地一體也。」<span class="block text-xs text-inksoft mt-1">邏輯的歸結是倫理與境界：萬物既相通為一，故當泛愛一切――此句與莊子「萬物與我為一」遙相呼應。</span></p></div>
+    </div>
+  </div>
+
+  <!-- 名家功過與本文關係 -->
+  <div class="grid md:grid-cols-2 gap-4 mt-6">
+    <div class="card-paper rounded-lg p-6 reveal">
+      <h4 class="font-black text-lg mb-2">名家的貢獻</h4>
+      <ul class="space-y-2 text-sm md:text-base leading-relaxed text-inksoft">
+        <li>✦ 深入剖析名實、同異、堅白等概念問題，是先秦最接近「純粹邏輯」的思潮。</li>
+        <li>✦ 與後期墨家（《墨經》）相互激盪，促成中國古代名學與論辯術的高峰。</li>
+        <li>✦ 其相對主義與語言反思，深刻影響了莊子的哲學表述。</li>
+      </ul>
+    </div>
+    <div class="card-paper rounded-lg p-6 reveal">
+      <h4 class="font-black text-lg mb-2">時人的批評</h4>
+      <ul class="space-y-2 text-sm md:text-base leading-relaxed text-inksoft">
+        <li>✦ 荀子譏其「甚察而不惠，辯而無用」；《天下》篇亦謂辯者「能勝人之口，不能服人之心」。</li>
+        <li>✦ 秦漢以降，名家著作多佚，學脈漸微，唯其論辯精神散見於諸子之間。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card-paper corner rounded-lg p-6 md:p-8 mt-6 bg-[#fbf6e8] reveal">
+    <h4 class="font-black text-xl text-cinnabar mb-3">名家精神・正在濠梁之上</h4>
+    <p class="leading-loose text-sm md:text-base">「子非魚，安知魚之樂？」這一句詰難，正是名家式思維的縮影：以主體之別為前提，以邏輯為尺度，追問一切「知」的根據。而莊子「請循其本」「我知之濠上」的回答，則把對話從名理的戰場帶回生命的現場。<b>一問一答之間，中國思想史上「邏輯」與「境界」兩條路徑，在濠水橋上完成了最漂亮的一次交鋒。</b></p>
+  </div>
+</section>
+
+<div class="divider my-4"><span>❖</span></div>
+
+<!-- ====== 肆・文本 ====== -->
+<section id="text" class="py-12 scroll-mt-20">
+  <div class="flex items-center gap-4 reveal">
+    <span class="sec-no">肆</span>
+    <div><h2 class="text-3xl md:text-4xl font-black">文本解讀與註釋</h2><p class="text-inksoft mt-1">選自《莊子・秋水》末章</p></div>
+  </div>
+  <div class="card-paper rounded-lg p-6 mt-8 reveal">
+    <p class="leading-loose text-sm md:text-base text-inksoft">《秋水》篇以河伯與北海若的對話層層推展，論說大小、多少、知與不知之無窮；篇末以此段「濠梁之辯」收束，由邏輯之辯轉入審美之悟。全文僅百餘字，卻有敘事、有描寫、有往復詰難，是《莊子》寓深理於小品的典範。<span class="text-cinnabar font-bold">點擊文中朱色詞語</span>，即可查看詳細註釋。</p>
+  </div>
+  <div class="grid lg:grid-cols-[7fr,5fr] gap-8 mt-8">
+    <!-- 橫排原文 -->
+    <div class="card-paper corner rounded-lg p-5 md:p-7 reveal">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-black text-xl tracking-widest">原文・橫排</h3>
+        <span class="text-xs text-inksoft border border-gold/60 rounded-full px-3 py-1">點擊朱色詞語查看註釋</span>
+      </div>
+      <div class="bg-[#fbf6e8] rounded border border-gold/30">
+        <div id="vText">
+莊子與惠子遊於濠梁之上。莊子曰：「鯈魚出遊從容，是魚之樂也。」惠子曰：「子非魚，安知魚之樂？」莊子曰：「子非我，安知我不知魚之樂？」惠子曰：「我非子，固不知子矣；子固非魚也，子之不知魚之樂，全矣！」莊子曰：「請循其本。子曰『汝安知魚樂』云者，既已知吾知之而問我，我知之濠上也。」
+        </div>
+      </div>
+      <p class="text-xs text-inksoft mt-3">――《莊子・秋水》（節選）</p>
+    </div>
+    <!-- 註釋面板 -->
+    <div class="space-y-5">
+      <div class="card-paper rounded-lg p-6 reveal min-h-[220px]" id="annoPanel">
+        <p class="text-inksoft leading-loose">✦ 註釋區：點擊左側原文中的朱色詞語，或下方詞語卡片，此處將顯示該字詞的讀音與解釋。</p>
+      </div>
+      <div class="card-paper rounded-lg p-5 reveal">
+        <h4 class="font-black mb-3">詞語卡片</h4>
+        <div id="annoChips" class="flex flex-wrap gap-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 論辯推演 -->
+  <div class="card-paper rounded-lg p-6 md:p-8 mt-8 reveal">
+    <h3 class="font-black text-2xl mb-1">論辯推演・六個回合</h3>
+    <p class="text-inksoft text-sm mb-6">點擊任一節點，觀察這場辯論如何步步推進、又如何峰迴路轉。</p>
+    <div id="stepRow" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3"></div>
+    <div id="stepDetail" class="mt-6 bg-[#fbf6e8] border border-gold/40 rounded-lg p-6 min-h-[120px]"></div>
+  </div>
+</section>
+
+<div class="divider my-4"><span>❖</span></div>
+
+<!-- ====== 伍・朗讀 ====== -->
+<section id="read" class="py-12 scroll-mt-20">
+  <div class="flex items-center gap-4 reveal">
+    <span class="sec-no">伍</span>
+    <div><h2 class="text-3xl md:text-4xl font-black">聆聽朗讀</h2><p class="text-inksoft mt-1">以聲入心，優遊濠上</p></div>
+  </div>
+  <div class="card-paper corner rounded-lg p-6 md:p-8 mt-8 reveal">
+    <div class="flex flex-wrap items-center gap-4 mb-6">
+      <button id="btnPlay" class="btn-cin px-7 py-2.5 rounded font-bold">▶ 開始朗讀</button>
+      <button id="btnStop" class="btn-ink px-6 py-2.5 rounded">■ 停止</button>
+      <label class="flex items-center gap-3 text-sm">
+        <span class="text-inksoft">語速</span>
+        <input id="rateRange" type="range" min="0.6" max="1.4" step="0.1" value="1" class="w-32">
+        <span id="rateVal" class="font-bold text-cinnabar w-10">1.0×</span>
+      </label>
+      <label class="flex items-center gap-2 text-sm">
+        <span class="text-inksoft">語音</span>
+        <select id="voiceSel" class="border border-ink/25 rounded bg-rice px-2 py-1.5 text-sm max-w-[180px]"></select>
+      </label>
+      <span id="readCount" class="text-xs text-inksoft ml-auto">0 / 0 字</span>
+    </div>
+    <div class="h-2 rounded-full bg-mist overflow-hidden mb-6"><div id="readBar" class="h-full w-0 bg-gradient-to-r from-gold to-cinnabar transition-all"></div></div>
+    <div id="readText" class="text-xl md:text-2xl leading-loose tracking-wide"></div>
+    <p id="voiceTip" class="text-xs text-inksoft mt-6">✦ 朗讀使用瀏覽器內建語音引擎，建議以 Chrome／Edge 開啟，並於上方選單選擇中文語音；部分裝置需先點擊播放才會發聲。</p>
+  </div>
+</section>
+
+<div class="divider my-4"><span>❖</span></div>
+
+<!-- ====== 陸・語譯 ====== -->
+<section id="translate" class="py-12 scroll-mt-20">
+  <div class="flex items-center gap-4 reveal">
+    <span class="sec-no">陸</span>
+    <div><h2 class="text-3xl md:text-4xl font-black">白話語譯</h2><p class="text-inksoft mt-1">逐句對照，並可點按 🔊 聆聽單句</p></div>
+  </div>
+  <div id="transList" class="space-y-4 mt-8"></div>
+  <p class="text-xs text-inksoft mt-4 reveal">※ 語譯採意譯，力求保留原文論辯語氣與神情。</p>
+</section>
+
+<div class="divider my-4"><span>❖</span></div>
+
+<!-- ====== 柒・賞析 ====== -->
+<section id="appreciate" class="py-12 scroll-mt-20">
+  <div class="flex items-center gap-4 reveal">
+    <span class="sec-no">柒</span>
+    <div><h2 class="text-3xl md:text-4xl font-black">品鑑賞析</h2><p class="text-inksoft mt-1">四個面向，讀透這場千古之辯</p></div>
+  </div>
+  <div class="grid lg:grid-cols-[5fr,7fr] gap-8 mt-8 items-start">
+    <div class="card-paper corner rounded-lg p-5 reveal order-2 lg:order-1">
+      <svg viewBox="0 0 440 440" class="w-full max-w-[340px] mx-auto h-auto floaty" role="img" aria-label="雙魚環游，陰陽相濟">
+        <defs><radialGradient id="kg" cx=".5" cy=".45" r=".75"><stop offset="0" stop-color="#f3f8ee"/><stop offset="1" stop-color="#dbe9dc"/></radialGradient></defs>
+        <circle cx="220" cy="220" r="200" fill="url(#kg)"/>
+        <g stroke="#9dc0b2" stroke-width="2.4" fill="none" opacity=".7">
+          <path d="M90 330 q22 -9 44 0 q22 9 44 0"/><path d="M260 120 q20 -8 40 0"/><path d="M300 330 q18 -8 36 0"/>
+        </g>
+        <g transform="translate(220 220)">
+          <circle r="92" fill="#fffdf6" stroke="#b8862b" stroke-opacity=".55" stroke-width="2"/>
+          <path d="M0 -92 A92 92 0 0 1 0 92 A46 46 0 0 1 0 0 A46 46 0 0 0 0 -92Z" fill="#37302a"/>
+          <circle cy="-46" r="13" fill="#fffdf6"/><circle cy="46" r="13" fill="#37302a"/>
+        </g>
+        <use href="#koi" x="196" y="52" width="120" height="64" transform="rotate(18 256 84)"/>
+        <use href="#koi" x="120" y="322" width="120" height="64" transform="rotate(198 180 354)"/>
+        <g fill="#6f9683"><path d="M70 150 a26 26 0 1 0 20 -40 q-4 22 -20 40Z"/><path d="M372 286 a22 22 0 1 0 17 -34 q-4 19 -17 34Z"/></g>
+        <g fill="#e8a0b0"><path d="M352 96 q8 -18 16 0 q-8 12 -16 0Z"/><path d="M74 268 q7 -15 14 0 q-7 10 -14 0Z"/></g>
+      </svg>
+      <p class="text-center text-sm text-inksoft mt-2 tracking-widest">雙魚環游・物我相濟</p>
+    </div>
+    <div class="order-1 lg:order-2">
+      <div class="flex flex-wrap gap-2 reveal">
+        <button class="tab-btn active rounded-full px-5 py-2 text-sm md:text-base" data-tab="t1">哲理之美</button>
+        <button class="tab-btn rounded-full px-5 py-2 text-sm md:text-base" data-tab="t2">論辯之妙</button>
+        <button class="tab-btn rounded-full px-5 py-2 text-sm md:text-base" data-tab="t3">審美之境</button>
+        <button class="tab-btn rounded-full px-5 py-2 text-sm md:text-base" data-tab="t4">千古迴響</button>
+      </div>
+      <div class="card-paper rounded-lg p-6 md:p-8 mt-5 min-h-[340px]">
+        <div id="t1" class="tab-panel">
+          <h4 class="font-black text-xl text-cinnabar mb-3">人何以知萬物之心？</h4>
+          <p class="leading-loose">惠子之問，觸及哲學上永恆的「<b>他心問題</b>」：他人的內心，我們真能知曉嗎？莊子的回答卻另闢蹊徑——他認為人與萬物並非彼此隔絕的孤島。當人心懷虛靜與同情去觀照世界，便能與魚之從容、鳥之翩然相感相通。這不是科學意義上的「認知」，而是生命與生命的「<b>感通</b>」，正合於道家「天地與我並生，萬物與我為一」的齊物境界。</p>
+        </div>
+        <div id="t2" class="tab-panel hidden">
+          <h4 class="font-black text-xl text-cinnabar mb-3">一場漂亮的語義機鋒</h4>
+          <p class="leading-loose">就邏輯而言，惠子的類比推論步步為營，幾乎已把莊子逼入死角；莊子的「請循其本」卻釜底抽薪：他把惠子句中「<b>安知</b>」的「安」（怎麼可能）悄悄轉為「<b>何處</b>」，答以「我知之濠上也」，於是問句反而成了「已知」的證明。以嚴格的邏輯看，這是偷換概念；以論辯的機鋒看，這正是以子之矛攻子之盾，在語言的縫隙間翩然脫身，令人擊節。</p>
+        </div>
+        <div id="t3" class="tab-panel hidden">
+          <h4 class="font-black text-xl text-cinnabar mb-3">一個「遊」字，滿紙春光</h4>
+          <p class="leading-loose">全篇以「<b>遊</b>」字定調：人遊於濠梁，魚遊於春水，心遊於物外。鯈魚「出遊從容」，何嘗不是莊子自寫其心？春日、清流、白魚、知交，構成一幅生意盎然的行樂圖。莊子之「知魚樂」，實是審美的移情：當人放下功利與成心，以空明之心映照萬物，魚之樂即我之樂——這是中國美學「情景交融」「物我兩忘」的最早濫觴之一。</p>
+        </div>
+        <div id="t4" class="tab-panel hidden">
+          <h4 class="font-black text-xl text-cinnabar mb-3">從濠上到千載之下</h4>
+          <p class="leading-loose">「濠上」「知魚」從此成為詩文與園林的經典意象：江南園林多築「知魚檻」「濠上亭」，憑欄觀魚，追慕莊惠遺風；蘇軾等文人亦常以「知魚」「濠上」入詩；現代哲學與認知科學討論「他心」與「移情」時，這段對話仍常被援引。一段百字小品，竟能激盪兩千餘年，可謂言約而意無窮。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider my-4"><span>❖</span></div>
+
+<!-- ====== 捌・問答 ====== -->
+<section id="quiz" class="py-12 scroll-mt-20">
+  <div class="flex items-center gap-4 reveal">
+    <span class="sec-no">捌</span>
+    <div><h2 class="text-3xl md:text-4xl font-black">互動問答</h2><p class="text-inksoft mt-1">八道小題，試試你是否讀懂了這場辯論</p></div>
+  </div>
+  <div class="max-w-3xl mx-auto mt-8">
+    <div class="card-paper corner rounded-lg p-6 md:p-8">
+      <div class="flex items-center justify-between mb-4 text-sm">
+        <span id="quizProg" class="text-inksoft">第 1 / 8 題</span>
+        <span class="text-gold font-bold">累計得分：<span id="quizScore">0</span></span>
+      </div>
+      <div class="h-2 rounded-full bg-mist overflow-hidden mb-6"><div id="quizBar" class="h-full w-0 bg-gradient-to-r from-jade to-gold transition-all"></div></div>
+      <div id="quizBox"><p class="text-inksoft">問答載入中……</p></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ====== 頁尾 ====== -->
+<footer class="mt-8 border-t border-ink/10 bg-[#efe6d2]">
+  <div class="max-w-6xl mx-auto px-4 py-10 text-center">
+    <span class="seal w-12 h-12 text-sm mb-4">知魚</span>
+    <p class="font-black text-lg tracking-widest mt-3">「我知之濠上也。」</p>
+    <p class="text-sm text-inksoft mt-3">文本依據：《莊子・秋水》｜本頁為古典文本互動學習教材，插畫皆為手繪向量創作</p>
+    <p class="text-xs text-inksoft/70 mt-2">願君常懷濠上之心，觀萬物而得其樂 ☯</p>
+  </div>
+</footer>
+
+<button id="toTop" class="fixed bottom-6 right-6 z-50 w-11 h-11 rounded-full btn-cin opacity-0 pointer-events-none translate-y-3" aria-label="回到頂端">↑</button>
+
+<script>
+/* ============ 資料 ============ */
+var annos = {
+  you:{term:'遊',pin:'yóu',def:'優遊、遊賞。《莊子》中的「遊」常指精神的自由遨遊，此一字為全篇定下審美的基調。',ex:'莊子與惠子遊於濠梁之上'},
+  haoliang:{term:'濠梁',pin:'háo liáng',def:'濠水上的橋。濠，水名，在今安徽省鳳陽縣一帶；梁，水中壘石而成的堰，可通行人，故稱「橋梁」。',ex:'遊於濠梁之上'},
+  tiaoyu:{term:'鯈魚',pin:'tiáo yú',def:'一種白色的小魚，亦作「鰷魚」，行動輕捷，常群遊於淺水之中。',ex:'鯈魚出遊從容'},
+  congyong:{term:'從容',pin:'cóng róng',def:'舒緩悠閒、不慌不忙的樣貌。',ex:'出遊從容'},
+  shi:{term:'是',pin:'shì',def:'指示代詞，「這、此」。古漢語中「是」多作近指代詞，而非判斷詞。',ex:'是魚之樂也'},
+  zi:{term:'子',pin:'zǐ',def:'第二人稱敬稱，相當於「您、你」。',ex:'子非魚'},
+  an:{term:'安',pin:'ān',def:'疑問代詞，「怎麼、哪裡」。此為全篇關鍵字：惠子以「怎麼可能」發難，莊子末句卻以「何處」作答，語義一轉，辯局遂定。',ex:'安知魚之樂？'},
+  gu:{term:'固',pin:'gù',def:'副詞，「本來、原來」。',ex:'固不知子矣'},
+  quan:{term:'全',pin:'quán',def:'完全、確定之意，指結論確定無疑。',ex:'子之不知魚之樂，全矣'},
+  xun:{term:'循其本',pin:'xún qí běn',def:'追溯話題的本源、回到開頭。循，沿著、追溯；本，本源。',ex:'請循其本'},
+  yunzhe:{term:'云者',pin:'yún zhě',def:'語氣詞連用，用於引述對方話語並稍作停頓，有「……這話嘛」的意味。',ex:'子曰「汝安知魚樂」云者'},
+  haishang:{term:'知之濠上',pin:'zhī zhī háo shàng',def:'在濠水之上體會到的。指以直觀、移情的審美方式感知魚之樂，而非依賴邏輯推論。',ex:'我知之濠上也'}
+};
+var chipOrder=['haoliang','tiaoyu','congyong','you','shi','zi','an','gu','quan','xun','yunzhe','haishang'];
+
+var stepsData=[
+ {t:'起・濠上同遊',who:'敘事',line:'莊子與惠子遊於濠梁之上',d:'一個「遊」字點出閒適無目的的審美心境：不為功利，只為賞玩，為下文「魚樂」預作鋪墊。'},
+ {t:'興・即景生感',who:'莊子',line:'鯈魚出遊從容，是魚之樂也',d:'莊子見白魚戲水而心生歡喜，以移情直觀斷言魚樂——這是審美的觀照，而非科學的判斷。'},
+ {t:'詰・邏輯發難',who:'惠子',line:'子非魚，安知魚之樂？',d:'惠子從認知主體的界線切入：不同主體之間無從互相知曉內心，「魚樂」之說似乎缺乏根據。'},
+ {t:'反・以子之矛',who:'莊子',line:'子非我，安知我不知魚之樂？',d:'莊子依樣反問：你若堅持「非彼則不知彼」，那麼你也無權斷定我不知道魚之樂。'},
+ {t:'結・類比定讞',who:'惠子',line:'我非子，固不知子矣……全矣',d:'惠子把論證推到極致：我不知你、你非魚，故你不知魚樂「完全」成立——邏輯上似乎已然取勝。'},
+ {t:'轉・請循其本',who:'莊子',line:'既已知吾知之而問我，我知之濠上也',d:'莊子回到問句本身：你問「在哪裡知道」，便已承認我知道。答以「濠上」，以直觀超越邏輯，辯論遂止於會心一笑。'}
+];
+
+var sentences=[
+ {who:'敘事',zh:'莊子與惠子遊於濠梁之上。',by:'莊子和惠子在濠水的橋上遊玩。'},
+ {who:'莊子',zh:'莊子曰：「鯈魚出遊從容，是魚之樂也。」',by:'莊子說：「鯈魚悠然自得地游來游去，這是魚兒的快樂啊。」'},
+ {who:'惠子',zh:'惠子曰：「子非魚，安知魚之樂？」',by:'惠子說：「你不是魚，怎麼知道魚的快樂？」'},
+ {who:'莊子',zh:'莊子曰：「子非我，安知我不知魚之樂？」',by:'莊子說：「你不是我，怎麼知道我不知道魚的快樂？」'},
+ {who:'惠子',zh:'惠子曰：「我非子，固不知子矣；子固非魚也，子之不知魚之樂，全矣！」',by:'惠子說：「我不是你，固然不知道你；你本來就不是魚，那麼你不知道魚的快樂，是完全確定的了！」'},
+ {who:'莊子',zh:'莊子曰：「請循其本。」',by:'莊子說：「請讓我們回到話題的原點。」'},
+ {who:'莊子',zh:'「子曰『汝安知魚樂』云者，既已知吾知之而問我，我知之濠上也。」',by:'「你說「你從哪裡知道魚的快樂」這句話，就表示你已經知道我知道魚兒快樂才來問我——我是在濠水之上知道的呀。」'}
+];
+
+var quizData=[
+ {q:'「濠梁之辯」的兩位主角是誰？',o:['莊子與惠子','孔子與老子','莊子與公孫龍','孟子與惠施'],a:0,d:'出自《莊子・秋水》，記載莊子與名家惠施在濠水橋上的一場辯論。'},
+ {q:'「鯈魚出遊從容，是魚之樂也」中的「是」，意思是？',o:['判斷詞「是」','這、此','正確','於是'],a:1,d:'古漢語中「是」多作近指代詞，相當於「這」，如「是可忍，孰不可忍」。'},
+ {q:'惠子說「子非魚，安知魚之樂？」其中「安」的意思是？',o:['安全','安靜','怎麼、哪裡','安置'],a:2,d:'「安」作疑問代詞，意為「怎麼、哪裡」；結尾莊子正是扣住此字翻出新意。'},
+ {q:'惠子以「我非子，固不知子矣」推論「子之不知魚之樂」，主要運用哪種推理？',o:['比喻論證','舉例論證','類比推理','引用論證'],a:2,d:'以「我非你，故不知你」類比「你非魚，故不知魚」，是名家擅用的類比推論。'},
+ {q:'莊子說「請循其本」，意思是？',o:['請查考典籍','請回到話題的本源','請再說一次','請就此別過'],a:1,d:'「循」是追溯，「本」是本源；莊子要求回到辯論的起點重新審視。'},
+ {q:'莊子最後答「我知之濠上也」，他宣稱以何種方式知道魚之樂？',o:['長期科學觀察','嚴密邏輯推導','詢問熟悉水性之人','直觀體悟、物我合一的審美心境'],a:3,d:'莊子之「知」是移情與直觀：在濠上以空明之心與游魚相感通。'},
+ {q:'本文選自哪部典籍的哪一篇？',o:['《論語・先進》','《孟子・梁惠王》','《莊子・秋水》','《老子・道經》'],a:2,d:'本文是《莊子・秋水》篇的末章，與河伯、北海若的對話同屬一篇。'},
+ {q:'惠子（惠施）是先秦哪一學派的代表人物？',o:['儒家','名家','道家','法家'],a:1,d:'惠施為名家「合同異」一派的代表，善辯而重邏輯分析，時任梁國之相。'}
+];
+var optLabel=['甲','乙','丙','丁'];
+
+/* ============ 問答（獨立模組・直接事件綁定） ============ */
+(function initQuiz(){
+  var box=document.getElementById('quizBox');
+  var prog=document.getElementById('quizProg');
+  var scoreEl=document.getElementById('quizScore');
+  var bar=document.getElementById('quizBar');
+  if(!box) return;
+  var idx=0, score=0, locked=false;
+  var optBtns=[], fbEl=null, nextBtn=null;
+
+  function renderQuestion(){
+    locked=false;
+    var q=quizData[idx];
+    prog.textContent='第 '+(idx+1)+' / '+quizData.length+' 題';
+    bar.style.width=(idx/quizData.length*100)+'%';
+    box.textContent='';
+
+    var wrap=document.createElement('div');
+    wrap.className='tab-panel';
+
+    var qEl=document.createElement('p');
+    qEl.className='text-xl md:text-2xl font-black leading-relaxed';
+    qEl.textContent=q.q;
+    wrap.appendChild(qEl);
+
+    var opts=document.createElement('div');
+    opts.className='grid gap-3 mt-6';
+    optBtns=[];
+    q.o.forEach(function(t,i){
+      var b=document.createElement('button');
+      b.type='button';
+      b.className='qopt rounded-lg px-4 py-3';
+      var lab=document.createElement('span');
+      lab.className='inline-block w-7 h-7 mr-2 rounded-full border border-current text-sm leading-6 text-center';
+      lab.textContent=optLabel[i];
+      b.appendChild(lab);
+      b.appendChild(document.createTextNode(t));
+      b.addEventListener('click',function(){ answer(i); });
+      opts.appendChild(b);
+      optBtns.push(b);
+    });
+    wrap.appendChild(opts);
+
+    fbEl=document.createElement('div');
+    fbEl.className='mt-5 hidden rounded-lg p-4 leading-relaxed';
+    wrap.appendChild(fbEl);
+
+    var row=document.createElement('div');
+    row.className='mt-6 text-right';
+    nextBtn=document.createElement('button');
+    nextBtn.type='button';
+    nextBtn.className='btn-cin px-7 py-2.5 rounded font-bold hidden';
+    nextBtn.textContent=(idx===quizData.length-1)?'查看結果':'下一題 →';
+    nextBtn.addEventListener('click',function(){
+      if(idx<quizData.length-1){ idx++; renderQuestion(); }
+      else{ renderResult(); }
+    });
+    row.appendChild(nextBtn);
+    wrap.appendChild(row);
+
+    box.appendChild(wrap);
+  }
+
+  function answer(i){
+    if(locked) return;
+    locked=true;
+    var q=quizData[idx];
+    optBtns.forEach(function(b,k){
+      b.disabled=true;
+      if(k===q.a) b.classList.add('correct');
+    });
+    if(i===q.a){
+      score++; scoreEl.textContent=score;
+      fbEl.style.background='#eaf3ec';
+      fbEl.style.border='1px solid rgba(94,138,112,.5)';
+      fbEl.innerHTML='<b style="color:#5e8a70">✓ 答對了！</b>　'+q.d;
+    }else{
+      optBtns[i].classList.add('wrong');
+      fbEl.style.background='#f9e9e6';
+      fbEl.style.border='1px solid rgba(178,59,42,.4)';
+      fbEl.innerHTML='<b style="color:#b23b2a">✗ 再想想。</b>正確答案為「'+optLabel[q.a]+'」。　'+q.d;
+    }
+    fbEl.classList.remove('hidden');
+    nextBtn.classList.remove('hidden');
+  }
+
+  function renderResult(){
+    bar.style.width='100%';
+    prog.textContent='完成！';
+    var pct=score/quizData.length;
+    var verdict,note;
+    if(pct===1){verdict='濠上知音';note='八題全對！你已深得觀魚之樂，可與莊惠同遊濠上矣。';}
+    else if(pct>=.75){verdict='心領神會';note='你已讀懂大半，再看一遍賞析，便可渾然忘機。';}
+    else if(pct>=.5){verdict='初窺門徑';note='魚樂之辯已入你眼簾，回到原文與註釋再細讀一回吧。';}
+    else{verdict='且讀且思';note='無妨！好書不厭百回讀，回到文本細讀，再來挑戰一次。';}
+    box.textContent='';
+    var wrap=document.createElement('div');
+    wrap.className='tab-panel text-center py-4';
+    wrap.innerHTML='<div class="seal w-24 h-24 text-2xl mx-auto stamp">'+verdict+'</div>'+
+      '<p class="text-4xl font-black mt-6">'+score+'<span class="text-lg text-inksoft"> / '+quizData.length+'</span></p>'+
+      '<p class="mt-4 text-inksoft leading-loose">'+note+'</p>';
+    var btnRow=document.createElement('div');
+    btnRow.className='flex justify-center gap-3 mt-8 flex-wrap';
+    var again=document.createElement('button');
+    again.type='button';
+    again.className='btn-cin px-7 py-2.5 rounded font-bold';
+    again.textContent='↻ 再試一次';
+    again.addEventListener('click',function(){ idx=0; score=0; scoreEl.textContent='0'; renderQuestion(); });
+    var back=document.createElement('a');
+    back.href='#text';
+    back.className='btn-ink px-7 py-2.5 rounded inline-block';
+    back.textContent='回到原文';
+    btnRow.appendChild(again);
+    btnRow.appendChild(back);
+    wrap.appendChild(btnRow);
+    box.appendChild(wrap);
+  }
+
+  try{ renderQuestion(); }
+  catch(err){ box.textContent='問答載入失敗：'+err.message; }
+})();
+
+/* ============ 註釋 ============ */
+(function initAnno(){
+  try{
+    var annoPanel=document.getElementById('annoPanel');
+    var annoChips=document.getElementById('annoChips');
+    var vText=document.getElementById('vText');
+    if(!annoPanel||!vText) return;
+    function showAnno(id){
+      var a=annos[id]; if(!a) return;
+      annoPanel.innerHTML='<div class="tab-panel">'+
+        '<div class="flex items-center gap-3 flex-wrap">'+
+        '<span class="text-3xl font-black text-cinnabar">'+a.term+'</span>'+
+        '<span class="text-sm text-gold">'+a.pin+'</span></div>'+
+        '<p class="mt-3 leading-loose">'+a.def+'</p>'+
+        '<p class="mt-3 text-sm text-inksoft border-t border-ink/10 pt-3">原文例句：<span class="text-cinnabar">「'+a.ex+'」</span></p></div>';
+      var all=document.querySelectorAll('.anno,.chip');
+      for(var i=0;i<all.length;i++){ all[i].classList.toggle('active',all[i].getAttribute('data-a')===id); }
+    }
+    window.showAnno=showAnno;
+    var html=vText.textContent;
+    var marks=[['濠梁','haoliang'],['鯈魚','tiaoyu'],['從容','congyong'],['循其本','xun'],['云者','yunzhe'],['知之濠上也','haishang'],['固','gu'],['全','quan'],['子非魚','zi'],['安','an'],['是','shi'],['遊','you']];
+    for(var m=0;m<marks.length;m++){
+      html=html.split(marks[m][0]).join('<span class="anno" data-a="'+marks[m][1]+'">'+marks[m][0]+'</span>');
+    }
+    vText.innerHTML=html;
+    var annoEls=vText.querySelectorAll('.anno');
+    for(var i=0;i<annoEls.length;i++){
+      annoEls[i].addEventListener('click',function(){ showAnno(this.getAttribute('data-a')); });
+    }
+    if(annoChips){
+      for(var c=0;c<chipOrder.length;c++){
+        var b=document.createElement('button');
+        b.className='chip';
+        b.setAttribute('data-a',chipOrder[c]);
+        b.textContent=annos[chipOrder[c]].term;
+        b.addEventListener('click',function(){ showAnno(this.getAttribute('data-a')); });
+        annoChips.appendChild(b);
+      }
+    }
+  }catch(err){ console.error('anno error',err); }
+})();
+
+/* ============ 論辯推演 ============ */
+(function initSteps(){
+  try{
+    var row=document.getElementById('stepRow'), detail=document.getElementById('stepDetail');
+    if(!row||!detail) return;
+    var cn=['一','二','三','四','五','六'];
+    stepsData.forEach(function(s,i){
+      var b=document.createElement('button');
+      b.className='step-node card-paper rounded-lg p-3 text-center';
+      b.innerHTML='<span class="block text-xs text-gold font-bold">第'+cn[i]+'回合</span><span class="block font-black mt-1">'+s.t+'</span>';
+      b.addEventListener('click',function(){
+        var nodes=row.querySelectorAll('.step-node');
+        for(var k=0;k<nodes.length;k++) nodes[k].classList.remove('active');
+        b.classList.add('active');
+        detail.innerHTML='<div class="tab-panel">'+
+          '<p class="text-sm"><span class="px-2 py-0.5 rounded bg-cinnabar text-rice">'+s.who+'</span> <span class="text-inksoft ml-2">'+s.t+'</span></p>'+
+          '<p class="font-black text-lg md:text-xl mt-3 text-ink">「'+s.line+'」</p>'+
+          '<p class="mt-3 leading-loose text-inksoft">'+s.d+'</p></div>';
+      });
+      row.appendChild(b);
+    });
+    row.querySelector('.step-node').click();
+  }catch(err){ console.error('steps error',err); }
+})();
+
+/* ============ 語譯 ============ */
+var speakOnce=function(){ /* 稍後由朗讀模組覆寫 */ };
+(function initTrans(){
+  try{
+    var box=document.getElementById('transList');
+    if(!box) return;
+    var nums=['一','二','三','四','五','六','七'];
+    sentences.forEach(function(s,i){
+      var row=document.createElement('div');
+      row.className='card-paper rounded-lg p-5 md:p-6 reveal';
+      var clean=s.zh.replace(/「|」|『|』/g,'');
+      row.innerHTML='<div class="flex items-start gap-4">'+
+        '<span class="seal w-9 h-9 text-sm flex-none">'+nums[i]+'</span>'+
+        '<div class="flex-1">'+
+        '<p class="text-xs text-gold tracking-widest mb-1">'+s.who+'</p>'+
+        '<p class="font-bold text-lg leading-relaxed">'+s.zh+'</p>'+
+        '<p class="mt-3 text-inksoft leading-relaxed bg-[#fbf6e8] rounded p-3">'+s.by+'</p>'+
+        '</div></div>';
+      var btn=document.createElement('button');
+      btn.className='btn-ink rounded-full w-10 h-10 flex-none flex items-center justify-center ml-4';
+      btn.setAttribute('aria-label','朗讀此句');
+      btn.textContent='🔊';
+      btn.addEventListener('click',function(){ speakOnce(clean); });
+      row.firstChild.appendChild(btn);
+      box.appendChild(row);
+    });
+  }catch(err){ console.error('trans error',err); }
+})();
+
+/* ============ 賞析頁籤 ============ */
+(function initTabs(){
+  try{
+    var btns=document.querySelectorAll('.tab-btn');
+    for(var i=0;i<btns.length;i++){
+      btns[i].addEventListener('click',function(){
+        for(var k=0;k<btns.length;k++) btns[k].classList.remove('active');
+        this.classList.add('active');
+        var panels=document.querySelectorAll('.tab-panel');
+        for(var k2=0;k2<panels.length;k2++) panels[k2].classList.add('hidden');
+        var p=document.getElementById(this.getAttribute('data-tab'));
+        if(p){ p.classList.remove('hidden'); p.style.animation='none'; void p.offsetWidth; p.style.animation=''; }
+      });
+    }
+  }catch(err){ console.error('tabs error',err); }
+})();
+
+/* ============ 朗讀 ============ */
+(function initSpeech(){
+  try{
+    var synthOK=('speechSynthesis' in window);
+    var readWrapEl=document.getElementById('readText');
+    if(!readWrapEl) return;
+    var fullRead=sentences.map(function(s){return s.zh.replace(/「|」|『|』/g,'');}).join('');
+    var charEls=[];
+    for(var i=0;i<fullRead.length;i++){
+      var sp=document.createElement('span');
+      sp.className='rchar';
+      sp.textContent=fullRead.charAt(i);
+      readWrapEl.appendChild(sp);
+      charEls.push(sp);
+    }
+    var voicesArr=[],curIdx=-1,playing=false,paused=false,boundarySeen=false,nudgeTimer=null;
+    var btnPlay=document.getElementById('btnPlay'),btnStop=document.getElementById('btnStop'),
+        rateRange=document.getElementById('rateRange'),rateVal=document.getElementById('rateVal'),
+        voiceSel=document.getElementById('voiceSel'),readBar=document.getElementById('readBar'),
+        readCount=document.getElementById('readCount'),voiceTip=document.getElementById('voiceTip');
+    readCount.textContent='0 / '+charEls.length+' 字';
+    if(!synthOK){
+      voiceTip.textContent='⚠ 目前的瀏覽器不支援語音合成，朗讀功能暫不可用，仍歡迎繼續閱讀其他單元。';
+      btnPlay.disabled=true;btnPlay.classList.add('opacity-50');
+    }
+    function loadVoices(){
+      voicesArr=speechSynthesis.getVoices();
+      var zh=voicesArr.filter(function(v){return /^zh|Chinese/i.test(v.lang)||/中文|Chinese|Taiwan|Hong Kong|粤|國語/.test(v.name);});
+      var list=zh.length?zh:voicesArr;
+      voiceSel.innerHTML='';
+      if(!list.length){voiceSel.innerHTML='<option>系統預設</option>';return;}
+      list.forEach(function(v){
+        var op=document.createElement('option');
+        op.value=v.voiceURI;
+        op.textContent=v.name+'（'+v.lang+'）';
+        voiceSel.appendChild(op);
+      });
+      var best=-1;
+      for(var i=0;i<list.length;i++){ if(/TW|Hant|中文\(臺灣\)|國語/.test(list[i].name+list[i].lang)){best=i;break;} }
+      if(best>=0) voiceSel.selectedIndex=best;
+    }
+    if(synthOK){ loadVoices(); speechSynthesis.onvoiceschanged=loadVoices; }
+    function markChar(i){
+      if(i<0||i>=charEls.length)return;
+      if(curIdx>=0)charEls[curIdx].classList.remove('now');
+      for(var k=Math.max(0,curIdx);k<i;k++)charEls[k].classList.add('done');
+      curIdx=i;charEls[i].classList.add('now');
+      readBar.style.width=((i+1)/charEls.length*100)+'%';
+      readCount.textContent=(i+1)+' / '+charEls.length+' 字';
+    }
+    function clearMarks(){
+      charEls.forEach(function(c){c.classList.remove('now','done');});
+      curIdx=-1;readBar.style.width='0%';readCount.textContent='0 / '+charEls.length+' 字';
+    }
+    function stopNudge(){ if(nudgeTimer){clearInterval(nudgeTimer);nudgeTimer=null;} }
+    function startNudge(rate){
+      stopNudge();
+      nudgeTimer=setInterval(function(){
+        if(!boundarySeen&&!paused&&playing){ markChar(Math.min(curIdx+1,charEls.length-1)); }
+      },Math.round(330/rate));
+    }
+    function beginRead(){
+      if(!synthOK)return;
+      speechSynthesis.cancel();clearMarks();boundarySeen=false;
+      var u=new SpeechSynthesisUtterance(fullRead);
+      var sel=null;
+      for(var i=0;i<voicesArr.length;i++){ if(voicesArr[i].voiceURI===voiceSel.value){sel=voicesArr[i];break;} }
+      if(sel){u.voice=sel;u.lang=sel.lang;}else{u.lang='zh-TW';}
+      u.rate=parseFloat(rateRange.value);
+      u.onboundary=function(e){ if(typeof e.charIndex==='number'){boundarySeen=true;markChar(e.charIndex);} };
+      u.onend=function(){playing=false;paused=false;stopNudge();btnPlay.textContent='▶ 開始朗讀';readBar.style.width='100%';setTimeout(clearMarks,1600);};
+      u.onerror=function(){playing=false;paused=false;stopNudge();btnPlay.textContent='▶ 開始朗讀';};
+      speechSynthesis.speak(u);
+      playing=true;paused=false;btnPlay.textContent='⏸ 暫停';
+      var rr=u.rate;
+      setTimeout(function(){ if(playing&&!boundarySeen)startNudge(rr); },1200);
+    }
+    btnPlay.addEventListener('click',function(){
+      if(!synthOK)return;
+      if(!playing){beginRead();return;}
+      if(!paused){speechSynthesis.pause();paused=true;btnPlay.textContent='▶ 繼續';stopNudge();}
+      else{speechSynthesis.resume();paused=false;btnPlay.textContent='⏸ 暫停';if(!boundarySeen)startNudge(parseFloat(rateRange.value));}
+    });
+    btnStop.addEventListener('click',function(){
+      if(!synthOK)return;
+      speechSynthesis.cancel();playing=false;paused=false;stopNudge();
+      btnPlay.textContent='▶ 開始朗讀';clearMarks();
+    });
+    rateRange.addEventListener('input',function(){
+      rateVal.textContent=parseFloat(rateRange.value).toFixed(1)+'×';
+      if(playing&&!paused)beginRead();
+    });
+    speakOnce=function(txt){
+      if(!synthOK)return;
+      if(playing){speechSynthesis.cancel();playing=false;paused=false;stopNudge();btnPlay.textContent='▶ 開始朗讀';clearMarks();}
+      speechSynthesis.cancel();
+      var u=new SpeechSynthesisUtterance(txt);
+      var sel=null;
+      for(var i=0;i<voicesArr.length;i++){ if(voicesArr[i].voiceURI===voiceSel.value){sel=voicesArr[i];break;} }
+      if(sel){u.voice=sel;u.lang=sel.lang;}else{u.lang='zh-TW';}
+      u.rate=parseFloat(rateRange.value);
+      speechSynthesis.speak(u);
+    };
+  }catch(err){ console.error('speech error',err); }
+})();
+
+/* ============ 進場動畫與導覽 ============ */
+(function initFx(){
+  try{
+    var revEls=document.querySelectorAll('.reveal');
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); }
+        });
+      },{threshold:.12});
+      for(var i=0;i<revEls.length;i++) io.observe(revEls[i]);
+    }else{
+      for(var j=0;j<revEls.length;j++) revEls[j].classList.add('show');
+    }
+    var secs=['author','dao','mingjia','text','read','translate','appreciate','quiz'];
+    if('IntersectionObserver' in window){
+      var spy=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){
+            var links=document.querySelectorAll('.navlink');
+            for(var k=0;k<links.length;k++){
+              links[k].classList.toggle('active',links[k].getAttribute('data-sec')===e.target.id);
+            }
+          }
+        });
+      },{rootMargin:'-40% 0px -55% 0px'});
+      secs.forEach(function(id){ var s=document.getElementById(id); if(s)spy.observe(s); });
+    }
+    var toTop=document.getElementById('toTop');
+    window.addEventListener('scroll',function(){
+      var show=window.scrollY>600;
+      toTop.classList.toggle('opacity-0',!show);
+      toTop.classList.toggle('pointer-events-none',!show);
+      toTop.classList.toggle('translate-y-3',!show);
+    },{passive:true});
+    toTop.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+  }catch(err){ console.error('fx error',err); }
+})();
+</script>
+</body>
+</html>
